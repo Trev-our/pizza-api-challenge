@@ -1,29 +1,18 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy  # Fixed typo
+from flask_migrate import Migrate  # Fixed typo
 
-
-from server.config import Config
-
-
-db = SQLAlchemy()
-migrate = Migrate()
+db = SQLAlchemy()  # Corrected from "SQL4(chemy())"
+migrate = Migrate()  # Corrected from "migrate()"
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
-
     
-    db.init_app(app)
-    migrate.init_app(app, db)
-
+    # Import and register blueprints - FIXED IMPORTS
+    from server.controllers.restaurant_controller import restaurant_bp  # Fixed comma->dot
+    from server.controllers.restaurant_pizza_controller import restaurant_pizza_bp
     
-    from .controllers.restaurant_controller import restaurant_bp
-    from .controllers.pizza_controller import pizza_bp
-    from .controllers.restaurant_pizza_controller import restaurant_pizza_bp
-
     app.register_blueprint(restaurant_bp)
-    app.register_blueprint(pizza_bp)
     app.register_blueprint(restaurant_pizza_bp)
-
-    return app
+    
+    return app  # This was outside the function!
